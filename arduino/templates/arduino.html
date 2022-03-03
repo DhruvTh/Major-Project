@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="./static/arduino.css">
+
+
+    <title>Arduino</title>
+</head>
+
+<body>
+    <div class="container-fluid ">
+        <div class="row dashboard bg-1">
+            <div class="col-md-10 ">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="navs" style="padding:1% 3% 2% 3%;">
+
+                            <ul class="nav buttons hr-line">
+                                <li class="nav-item active">
+                                    <a class="nav-link section-name" href="{{url_for('arduino')}}">Arduino</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="videos">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="graph graph1">
+                                <div id="emsg" class="text-center">
+                                    <!-- <div class="alert alert-warning" role="alert">Connection lost!!! <span onclick="makeConnection()" id="restart" class="alert-link">Reconnect Arduino</span>.</div> -->
+                                </div>
+
+                                <form method="post" id="formConnection">
+                                    <input type="text" name="connection" id="connection" hidden>
+                                </form>
+                                <img src="{{ url_for('video') }}" width="100%" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-2 bg-2 align-items-center">
+                <div class="row" style="height: 100%;">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-10 ">
+                        <div class="variables  text-center">
+
+                            <h2>Variables</h2>
+                            <div class="variable bg-1">
+                                <h3>
+                                    Avg. Pressure
+                                </h3>
+                                <h2 id="variable1">xxx</h2>
+                            </div>
+
+                            <!-- <div>
+                                <form method="post" id="form-id">
+                                    <b style="color: white;"> Win</b>
+                                    <label class="switch">
+                                        <input type="checkbox" id="togBtn" value="false" {% if device=='mac' %}
+                                            checked {%endif%}>
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <b style="color: white;">Mac</b>
+                                    <input type="text" class="btn btn-primary" name="device" id="device"
+                                        hidden></button>
+                                </form>
+                            </div> -->
+
+                            <div>
+                                <form method="post" id="form-id">
+                                    <p><b style="color: white; font-size:larger"> Center of <br> pressure line</b></p>
+                                    <label class="switch">
+                                        <input type="checkbox" id="togBtn" value="" {% if cop=='on' %} checked
+                                            {%endif%}>
+                                        <span class="slider slider1 round"></span>
+                                    </label>
+                                    <input type="text" class="btn btn-primary" name="cop" id="cop" hidden>
+                                </form>
+                            </div>
+
+                            <div>
+                                <form method="post" id="form-id1">
+                                    <b style="color: white;"> Stop </b>
+                                    <label class="switch">
+                                        <input type="checkbox" id="togBtn1" value="false" {% if cap1=='1' %} checked
+                                            {%endif%}>
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <b style="color: white;">Start </b>
+                                    <input type="text" class="btn btn-primary" name="cap1" id="cap1" hidden>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Optional JavaScript -->
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous">
+        </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <script src="./static/arduino.js"></script>
+</body>
+
+</html>
