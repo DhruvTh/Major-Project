@@ -14,6 +14,7 @@ from flask import Flask, request, render_template, Response, make_response
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 import threading
+import pandas as pd
 
 matplotlib.use('agg')
 
@@ -37,7 +38,11 @@ class Arduino:
         self.capst=0
         self.listimg=[]
         self.start=True
-        self.avg=0
+        self.vdiv=100
+        self.hdiv1=53
+        self.hdiv2=106
+        self.divp=np.array([0,0,0,0,0,0,0])
+        self.listexl=[]
 
     def arduino_est(self):
         try:
@@ -86,18 +91,22 @@ class Arduino:
         while self.est=='1':
             fig = plt.figure(figsize=(20,8))
             ax = fig.add_subplot(1,2,1)
+            #self.data=np.random.randint(150,size=(16,16))
             data1 = scipy.ndimage.zoom(self.data,10, mode='nearest')
             ax.pcolormesh(data1, vmin=0, vmax=100, cmap='jet')
             ax.axis('off')
             z=list(self.data.flatten())
-            mx,my=[],[]            
+            mx,my,my1=[],[],[]            
             if(self.cop=='on'):
                 for i in range(0,160):
                     mx.append(i)
-                    my.append(np.argmax(data1[i,:]))
+                    my.append(np.argmax(data1[i,:self.vdiv]))
+                    my1.append(np.argmax(data1[i,self.vdiv:]))
                 mx=np.array(mx)
                 my=np.array(my)
+                my1=np.array(my1)
                 ax.plot(my,mx)
+                ax.plot(my1+self.vdiv,mx)
             bottom = np.zeros_like(z)
             width = depth = np.ones_like(z)
             ay = fig.add_subplot(1, 2, 2, projection='3d')
@@ -112,13 +121,22 @@ class Arduino:
             img2=img[100:750,1100:1800,:]
             #img2 = cv2.copyMakeBorder(img2, 40, 40, 20, 40, cv2.BORDER_CONSTANT, None, value = 0)
             img1=cv2.resize(img1,(500,450))
+            img1=cv2.line(img1, pt1=(30+int(self.vdiv*440/160),30), pt2=(30+int(self.vdiv*440/160),425), color=(0,0,0), thickness=2)
+            img1=cv2.line(img1, pt1=(30,30+int(self.hdiv1*395/160)), pt2=(470,30+int(self.hdiv1*395/160)), color=(0,0,0), thickness=2)
+            img1=cv2.line(img1, pt1=(30,30+int(self.hdiv2*395/160)), pt2=(470,30+int(self.hdiv2*395/160)), color=(0,0,0), thickness=2)
             img2=cv2.resize(img2,(500,450))
             img=np.hstack((img1,img2))
             plt.close()
+            div1=np.hsplit(data1,[self.vdiv])
+            div1=[(sum(j[j!=0])/(len(j[j!=0]) or 1)) for i in div1 for j in np.vsplit(i,[self.hdiv1,self.hdiv2])]
+            div1.append((sum(self.data[self.data!=0])/(len(self.data[self.data!=0]) or 1)))
+            div1=np.array(div1)
+            self.divp= np.round((0.000000388*(div1**5)- 0.000087126*(div1**4)+ 0.008421021*(div1**3)- 0.275899413*(div1**2) + (4.714242168*div1)),1)
             self.caph.append(int(self.cap2))
             self.caph.pop(0)
             if(self.caph[0]==1 and self.caph[1]==1):
                 self.listimg.append(img)
+                self.listexl.append(self.divp)
             if(self.caph[0]==1 and self.caph[1]==0):
                 height, width, layers = img.shape
                 size = (width,height)
@@ -127,15 +145,13 @@ class Arduino:
                 for i in range(len(self.listimg)):
                     out.write(np.uint8(self.listimg[i]))
                 out.release()
+                df = pd.DataFrame(self.listexl,columns=['Right Front','Right Mid','Right End','Left Front','Left Mid','Left End','Overall Average'])
+                writer = pd.ExcelWriter('saved_videos/'+str(now)+'.xlsx')
+                df.to_excel(writer, index=False)
+                writer.save()
                 self.listimg=[]
-            avg=[i for i in self.data.flatten() if i>1]
-            if(avg!= []):
-                avg = np.average(avg)
-                data= 0.000000388*(avg**5)- 0.000087126*(avg**4)+ 0.008421021*(avg**3)- 0.275899413*(avg**2) + (4.714242168*avg)
-                self.avg=np.round(data,1)
-                print(data)
-            else:
-                self.avg=0
+                self.listexl=[]            
+            
             ret2, buffer2 = cv2.imencode('.jpg', img)
             frame = buffer2.tobytes()
             yield(b'--frame\r\n'
@@ -179,15 +195,15 @@ def arduino():
 
 @app.route('/avp')
 def avp():
-    data = [str(np.round(com[0].avg,1))] 
-    response = make_response(json.dumps(data))
+    data = str(com[0].divp)
+    response = make_response(json.dumps(data[0]))
     response.content_type = 'application/json'
     return response
 
 @app.route('/emsg')
 def emsg():
     data = [com[0].est] 
-    response = make_response(json.dumps(data))
+    response = make_response(json.dumps(data[0]))
     response.content_type = 'application/json'
     return response
     
