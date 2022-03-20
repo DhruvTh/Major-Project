@@ -121,6 +121,7 @@ class Arduino:
             img2=img[100:750,1100:1800,:]
             #img2 = cv2.copyMakeBorder(img2, 40, 40, 20, 40, cv2.BORDER_CONSTANT, None, value = 0)
             img1=cv2.resize(img1,(500,450))
+            img1 = cv2.flip(img1,1)
             img1=cv2.line(img1, pt1=(30+int(self.vdiv*440/160),30), pt2=(30+int(self.vdiv*440/160),425), color=(0,0,0), thickness=2)
             img1=cv2.line(img1, pt1=(30,30+int(self.hdiv1*395/160)), pt2=(470,30+int(self.hdiv1*395/160)), color=(0,0,0), thickness=2)
             img1=cv2.line(img1, pt1=(30,30+int(self.hdiv2*395/160)), pt2=(470,30+int(self.hdiv2*395/160)), color=(0,0,0), thickness=2)
@@ -129,7 +130,7 @@ class Arduino:
             plt.close()
             div1=np.hsplit(data1,[self.vdiv])
             div1=[(sum(j[j!=0])/(len(j[j!=0]) or 1)) for i in div1 for j in np.vsplit(i,[self.hdiv1,self.hdiv2])]
-            div1.append((sum(self.data[self.data!=0])/(len(self.data[self.data!=0]) or 1)))
+            div1.append((sum(data1[data1!=0])/(len(data1[data1!=0]) or 1)))
             div1=np.array(div1)
             self.divp= np.round((0.000000388*(div1**5)- 0.000087126*(div1**4)+ 0.008421021*(div1**3)- 0.275899413*(div1**2) + (4.714242168*div1)),1)
             self.caph.append(int(self.cap2))
