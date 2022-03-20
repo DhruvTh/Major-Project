@@ -60,23 +60,27 @@ background-size: cover;
 
 }
 
-.variables{
-  padding: 50% 0 0 0;
+.variablesBox{
+  padding: 10% 0 0 0;
 }
 
 .variable{
   /* text-align: left; */
   /* padding:5% 0% 4% 5%; */
   padding: 4%;
-  margin: 20% 0;
+  margin: 15% 0;
   border-radius: 20px;
 }
 
-.variable h2{
+.variable p{
   color:#fb9902;
   padding-left: 5%;
+  font-size: 140%;
+  margin-bottom: 0!important;
+
 }
-.variable h3{
+.variables{
+  font-size: 125%;
   color: white;
 }
 
@@ -168,4 +172,11 @@ border-radius: 50%;
 #restart:hover{
   text-decoration: underline;
   cursor:pointer;
+}
+
+#rangeInput, #rangeInput1, #rangeInput2{
+  width: 100%;
+}
+#textInput, #textInput1, #textInput2{
+  color:white;
 }

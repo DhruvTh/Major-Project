@@ -38,7 +38,7 @@ class Arduino:
         self.capst=0
         self.listimg=[]
         self.start=True
-        self.vdiv=100
+        self.vdiv=80
         self.hdiv1=53
         self.hdiv2=106
         self.divp=np.array([0,0,0,0,0,0,0])
@@ -169,6 +169,7 @@ def video():
 
 cop = ['off']
 connection = [''] 
+ragTemp = ['','','']
 
 @app.route('/', methods=['GET', 'POST'])
 def arduino():
@@ -177,6 +178,9 @@ def arduino():
         cop[0] = request.values.get('cop')
         capture[0] = request.values.get('cap1')
         connection[0] = request.values.get('connection')
+        ragTemp[0] = request.values.get('rangeInput')
+        ragTemp[1] = request.values.get('rangeInput1')
+        ragTemp[2] = request.values.get('rangeInput2')
 
         
     if(cop[0] != '' and cop[0] != None):
@@ -188,15 +192,24 @@ def arduino():
 
     if(connection[0] != '' and connection[0] != None):
         com[0].arduino_est()
-        
+
+    if(ragTemp[0] != '' and ragTemp[0] != None):
+        com[0].vdiv = int(ragTemp[0])
+
+    if(ragTemp[1] != '' and ragTemp[1] != None):
+        com[0].hdiv1 = int(ragTemp[1])
+
+    if(ragTemp[2] != '' and ragTemp[2] != None):
+        com[0].hdiv2 = int(ragTemp[2])
     
-    return render_template('arduino.html', cop = com[0].cop, cap1 = com[0].cap2)
+    return render_template('arduino.html', cop = com[0].cop, cap1 = com[0].cap2, range = [com[0].vdiv,com[0].hdiv1,com[0].hdiv2])
 
 
 @app.route('/avp')
 def avp():
-    data = str(com[0].divp)
-    response = make_response(json.dumps(data[0]))
+    data = com[0].divp
+    data = data.tolist()
+    response = make_response(json.dumps(data))
     response.content_type = 'application/json'
     return response
 
@@ -210,6 +223,6 @@ def emsg():
 
 if __name__ == '__main__':
     app.debug = True
-    app.run()
+    app.run(port=5001)
     
     

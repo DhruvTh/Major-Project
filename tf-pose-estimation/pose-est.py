@@ -32,7 +32,7 @@ app = Flask(__name__)
 
 
 class pose_estimation:
-    def __init__(self, processing = 'high'):
+    def __init__(self, processing = 'low'):
         if (processing=='low'):
             self.model='mobilenet_thin'
             self.resize='432x368'

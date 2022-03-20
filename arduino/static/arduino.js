@@ -37,8 +37,16 @@ function requestData(){
     // console.log(requests)
 
     var tm = requests.done(function(result){
-      // console.log(result)
+      console.log(result)
       $('#variable1').html(result[0])
+      $('#variable2').html(result[1])
+      $('#variable3').html(result[2])
+      $('#variable4').html(result[3])
+      $('#variable5').html(result[4])
+      $('#variable6').html(result[5])
+      $('#variable7').html(result[6])
+
+
     })
   }
 
@@ -71,4 +79,26 @@ function makeConnection(){
   console.log("sdffdgf")
   document.getElementById('formConnection').submit();
 }
-  
+
+function updateTextInput(val) {
+  document.getElementById('textInput').innerHTML =val; 
+  document.getElementById("sliderForm").submit();
+}
+let value = $('#rangeInput').val()
+$('#textInput').html(value) 
+
+
+function updateTextInput1(val) {
+  document.getElementById('textInput1').innerHTML =val; 
+  document.getElementById("sliderForm1").submit();
+}
+let value1 = $('#rangeInput1').val()
+$('#textInput1').html(value1) 
+
+
+function updateTextInput2(val) {
+  document.getElementById('textInput2').innerHTML =val; 
+  document.getElementById("sliderForm2").submit();
+}
+let value2 = $('#rangeInput2').val()
+$('#textInput2').html(value2)

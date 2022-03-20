@@ -52,16 +52,78 @@
             </div>
             <div class="col-md-2 bg-2 align-items-center">
                 <div class="row" style="height: 100%;">
-                    <div class="col-md-1"></div>
-                    <div class="col-md-10 ">
-                        <div class="variables  text-center">
+                    <!-- <div class="col-md-1"></div> -->
+                    <div class="col-md-12 ">
+                        <div class="variablesBox  text-center">
 
-                            <h2>Variables</h2>
                             <div class="variable bg-1">
-                                <h3>
-                                    Avg. Pressure
-                                </h3>
-                                <h2 id="variable1">xxx</h2>
+                                <div class="row">
+                                    <div class="col-md-6 text-center">
+                                        <p>
+                                            RFP
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <span id="variable1" class="variables">xxx</span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 text-center">
+                                        <p>
+                                            RMP
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <span id="variable2" class="variables">xxx</span>
+                                    </div>
+                                </div><div class="row">
+                                    <div class="col-md-6 text-center">
+                                        <p>
+                                            REP
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <span id="variable3" class="variables">xxx</span>
+                                    </div>
+                                </div><div class="row">
+                                    <div class="col-md-6 text-center">
+                                        <p>
+                                            LFP
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <span id="variable4" class="variables">xxx</span>
+                                    </div>
+                                </div><div class="row">
+                                    <div class="col-md-6 text-center">
+                                        <p>
+                                            LMP
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <span id="variable5" class="variables">xxx</span>
+                                    </div>
+                                </div><div class="row">
+                                    <div class="col-md-6 text-center">
+                                        <p>
+                                            LEP
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <span id="variable6" class="variables">xxx</span>
+                                    </div>
+                                </div><div class="row">
+                                    <div class="col-md-6 text-center">
+                                        <p>
+                                            Avg. P
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <span id="variable7" class="variables">xxx</span>
+                                    </div>
+                                </div>
+                                
                             </div>
 
                             <!-- <div>
@@ -80,17 +142,21 @@
 
                             <div>
                                 <form method="post" id="form-id">
-                                    <p><b style="color: white; font-size:larger"> Center of <br> pressure line</b></p>
+                                    <!-- <p><b style="color: white; font-size:larger"> COP</b></p> -->
+                                    <b style="color: white;">&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+
                                     <label class="switch">
                                         <input type="checkbox" id="togBtn" value="" {% if cop=='on' %} checked
                                             {%endif%}>
                                         <span class="slider slider1 round"></span>
                                     </label>
+                                    <b style="color: white;"> COP </b>
+
                                     <input type="text" class="btn btn-primary" name="cop" id="cop" hidden>
                                 </form>
                             </div>
 
-                            <div>
+                            <div style="margin-bottom: 10%;">
                                 <form method="post" id="form-id1">
                                     <b style="color: white;"> Stop </b>
                                     <label class="switch">
@@ -100,6 +166,55 @@
                                     </label>
                                     <b style="color: white;">Start </b>
                                     <input type="text" class="btn btn-primary" name="cap1" id="cap1" hidden>
+                                </form>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-md-2 p-0">
+                                    <span style="color:white;">V1</span>
+                                </div>
+                                <div class="col-md-7 p-0">
+                                    <form id="sliderForm" method="post">
+                                        <input type="range" style="margin-top:4%;" min="10" max="150" id="rangeInput" {%
+                                            if range[0]!='' %} value="{{range[0]}}" {%endif%} name="rangeInput"
+                                            onchange="updateTextInput(this.value);">
+                                </div>
+                                <div class="col-md-3 p-0">
+                                    <span id="textInput"></span>
+                                </div>
+                                </form>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-2 p-0">
+                                    <span style="color:white;">H1</span>
+                                </div>
+                                <div class="col-md-7 p-0">
+                                    <form id="sliderForm1" method="post">
+                                        <input type="range" style="margin-top:4%;" min="10" max="70" id="rangeInput1"
+                                            {% if range[1]!='' %} value="{{range[1]}}" {%endif%} name="rangeInput1"
+                                            onchange="updateTextInput1(this.value);">
+                                </div>
+                                <div class="col-md-3 p-0">
+                                    <span id="textInput1"></span>
+                                </div>
+                                </form>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-2 p-0">
+                                    <span style="color:white;">H2</span>
+                                </div>
+                                <div class="col-md-7 p-0">
+                                    <form id="sliderForm2" method="post">
+                                        <input type="range" style="margin-top:4%;" min="80" max="150" id="rangeInput2"
+                                            {% if range[2]!='' %} value="{{range[2]}}" {%endif%} name="rangeInput2"
+                                            onchange="updateTextInput2(this.value);">
+                                </div>
+                                <div class="col-md-3 p-0">
+                                    <span id="textInput2"></span>
+                                </div>
                                 </form>
                             </div>
 
