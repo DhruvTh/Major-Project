@@ -115,19 +115,21 @@ class pose_estimation:
                 
             self.caph.append(int(self.cap1))
             self.caph.pop(0)
-                    
+            if(self.caph[0]==0 and self.caph[1]==1):
+                self.stime=time.time()     
             if(self.caph[0]==1 and self.caph[1]==1):
                 self.listimg.append(img)
-                self.listexl.append([self.rangle,self.langle,self.swing])
+                self.listexl.append([time.time()-self.stime]+[self.rangle,self.langle,self.swing])
+                self.etime=time.time()
             if(self.caph[0]==1 and self.caph[1]==0):
                 height, width, layers = img.shape
                 size = (width,height)
                 now = time.time()
-                out = cv2.VideoWriter('saved_videos/'+str(now)+'.avi',cv2.VideoWriter_fourcc(*'DIVX'), 2, size)
+                out = cv2.VideoWriter('saved_videos/'+str(now)+'.avi',cv2.VideoWriter_fourcc(*'DIVX'), len(self.listexl)/(self.etime-self.stime), size)
                 for i in range(len(self.listimg)):
                     out.write(np.uint8(self.listimg[i]))
                 out.release()
-                df = pd.DataFrame(self.listexl,columns=['Right Angle','Left Angle','Swing Angle'])
+                df = pd.DataFrame(self.listexl,columns=['timestamp','Right Angle','Left Angle','Swing Angle'])
                 writer = pd.ExcelWriter('saved_videos/'+str(now)+'.xlsx')
                 df.to_excel(writer, index=False)
                 writer.save()

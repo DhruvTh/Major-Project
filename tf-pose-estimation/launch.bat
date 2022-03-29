@@ -1,2 +1,2 @@
-call activate tf2_py37
+call activate tf-gpu
 python pose-est.py
