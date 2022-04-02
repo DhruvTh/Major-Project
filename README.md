@@ -24,6 +24,7 @@ Now after installing the git create a new environment
 
 4)Follow the steps given in - https://towardsdatascience.com/realtime-multiple-person-2d-pose-estimation-using-tensorflow2-x-93e4c156d45f
 
+
 (In the above process do not need to clone "git clone https://github.com/gsethi2409/tf-pose-estimation.git" and Download the built-in tools from https://visualstudio.microsoft.com/visual-cpp-build-tools/ and install it to avoid error while installing the packages (Do not need to do it for mac and linux))
 
 5)After that run the following commands to install required packages,
